@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface IClientService {
     List<Client> findAll();
+    Client create(Client client);
 
 }

@@ -20,4 +20,10 @@ public class ClientService implements IClientService {
         return clientRepository.findAll();
     }
 
+    @Override
+    @Transactional
+    public Client create(Client client) {
+        return clientRepository.save(client);
+    }
+
 }
