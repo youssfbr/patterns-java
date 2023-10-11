@@ -12,17 +12,21 @@ import java.util.List;
 
 @Data
 @Entity(name = "tb_client")
-public class Clients {
+public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
+
     private LocalDate birthDate;
 
     @ToString.Exclude
     @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE })
+    @JoinTable(name = "tb_client_phone",
+            joinColumns = @JoinColumn(name = "client_id"),
+            inverseJoinColumns = @JoinColumn(name = "phone_id"))
     private List<Phone> phones;
 
     @CreationTimestamp
