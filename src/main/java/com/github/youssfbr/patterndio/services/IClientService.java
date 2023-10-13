@@ -1,11 +1,12 @@
 package com.github.youssfbr.patterndio.services;
 
-import com.github.youssfbr.patterndio.entities.Client;
+import com.github.youssfbr.patterndio.dtos.ClientResponseDTO;
+import com.github.youssfbr.patterndio.dtos.ClientResquestDTO;
 
 import java.util.List;
 
 public interface IClientService {
-    List<Client> findAll();
-    Client create(Client client);
+    List<ClientResponseDTO> findAll();
+    ClientResponseDTO create(ClientResquestDTO clientResquestDTO);
 
 }

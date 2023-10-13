@@ -1,10 +1,8 @@
 package com.github.youssfbr.patterndio.entities.enums;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
 public enum PhoneType {
 
     RES("Res"),
@@ -13,4 +11,7 @@ public enum PhoneType {
 
     private final String description;
 
+    PhoneType(String description) {
+        this.description = description;
+    }
 }

@@ -1,6 +1,7 @@
 package com.github.youssfbr.patterndio.controllers;
 
-import com.github.youssfbr.patterndio.entities.Client;
+import com.github.youssfbr.patterndio.dtos.ClientResponseDTO;
+import com.github.youssfbr.patterndio.dtos.ClientResquestDTO;
 import com.github.youssfbr.patterndio.services.IClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,13 +17,13 @@ public class ClientController {
     private final IClientService clientService;
 
     @GetMapping
-    public List<Client> listAll() {
+    public List<ClientResponseDTO> listAll() {
         return clientService.findAll();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Client create(@RequestBody Client client) {
+    public ClientResponseDTO create(@RequestBody ClientResquestDTO client) {
         return clientService.create(client);
     }
 
