@@ -33,8 +33,17 @@ public class ClientController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ClientResponseDTO create(@RequestBody ClientResquestDTO client) {
-        return clientService.create(client);
+    public ClientResponseDTO create(@RequestBody ClientResquestDTO clientResquestDTO) {
+        return clientService.create(clientResquestDTO);
+    }
+
+    @PutMapping
+    public Response<ClientResponseDTO> updateClient(@RequestBody ClientResquestDTO clientResquestDTO) {
+
+        Response<ClientResponseDTO> response = new Response<>();
+        response.setData(clientService.updateClient(clientResquestDTO));
+
+        return response;
     }
 
 }

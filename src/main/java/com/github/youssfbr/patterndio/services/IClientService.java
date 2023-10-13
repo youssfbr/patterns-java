@@ -9,5 +9,6 @@ public interface IClientService {
     List<ClientResponseDTO> findAll();
     ClientResponseDTO findById(Long id);
     ClientResponseDTO create(ClientResquestDTO clientResquestDTO);
+    ClientResponseDTO updateClient(ClientResquestDTO clientResquestDTO);
 
 }

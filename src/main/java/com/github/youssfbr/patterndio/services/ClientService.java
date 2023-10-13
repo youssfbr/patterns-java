@@ -76,6 +76,24 @@ public class ClientService implements IClientService {
         }
     }
 
+    @Override
+    public ClientResponseDTO updateClient(ClientResquestDTO clientResquestDTO) {
+        try {
+            verifyIfClientExists(clientResquestDTO.getId());
+
+            Client clientToUpdate = new Client(clientResquestDTO);
+            Client updatedClient = clientRepository.save(clientToUpdate);
+
+            return new ClientResponseDTO(updatedClient);
+        }
+        catch (ClientNotFoundException e) {
+            throw e;
+        }
+        catch (Exception e) {
+            throw new InternalServerErrorException();
+        }
+    }
+
     private Client verifyIfClientExists(Long id) {
         return clientRepository
                 .findById(id)
