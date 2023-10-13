@@ -4,6 +4,7 @@ import com.github.youssfbr.patterndio.dtos.ClientResponseDTO;
 import com.github.youssfbr.patterndio.dtos.ClientResquestDTO;
 import com.github.youssfbr.patterndio.entities.Client;
 import com.github.youssfbr.patterndio.repositories.IClientRepository;
+import com.github.youssfbr.patterndio.services.exceptions.ClientNotFoundException;
 import com.github.youssfbr.patterndio.services.exceptions.InternalServerErrorException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CachePut;
@@ -35,11 +36,35 @@ public class ClientService implements IClientService {
     }
 
     @Override
+    @CachePut(key = "#id")
+    @Transactional(readOnly = true)
+    public ClientResponseDTO findById(Long id) {
+        try {
+            return clientRepository
+                    .findById(id)
+                    .map(ClientResponseDTO::new)
+                    .orElseThrow(() -> new ClientNotFoundException(id));
+        }
+        catch (ClientNotFoundException e) {
+            throw e;
+        }
+        catch (Exception e) {
+            throw new InternalServerErrorException();
+        }
+    }
+
+    @Override
     @Transactional
     public ClientResponseDTO create(ClientResquestDTO clientResquestDTO) {
         Client client = new Client(clientResquestDTO);
         Client clientSaved = clientRepository.save(client);
         return new ClientResponseDTO(clientSaved);
+    }
+
+    private Client verifyIfClientExists(Long id) {
+        return clientRepository
+                .findById(id)
+                .orElseThrow(() -> new ClientNotFoundException(id));
     }
 
 }

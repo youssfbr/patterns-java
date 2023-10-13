@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface IClientService {
     List<ClientResponseDTO> findAll();
+    ClientResponseDTO findById(Long id);
     ClientResponseDTO create(ClientResquestDTO clientResquestDTO);
 
 }

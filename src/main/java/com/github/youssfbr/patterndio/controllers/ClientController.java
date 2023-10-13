@@ -2,6 +2,7 @@ package com.github.youssfbr.patterndio.controllers;
 
 import com.github.youssfbr.patterndio.dtos.ClientResponseDTO;
 import com.github.youssfbr.patterndio.dtos.ClientResquestDTO;
+import com.github.youssfbr.patterndio.dtos.Response;
 import com.github.youssfbr.patterndio.services.IClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,15 @@ public class ClientController {
     @GetMapping
     public List<ClientResponseDTO> listAll() {
         return clientService.findAll();
+    }
+
+    @GetMapping("{id}")
+    public Response<ClientResponseDTO> findById(@PathVariable Long id) {
+
+        Response<ClientResponseDTO> response = new Response<>();
+        response.setData(clientService.findById(id));
+
+        return response;
     }
 
     @PostMapping
