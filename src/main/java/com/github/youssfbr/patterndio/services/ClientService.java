@@ -77,6 +77,7 @@ public class ClientService implements IClientService {
     }
 
     @Override
+    @Transactional
     public ClientResponseDTO updateClient(ClientResquestDTO clientResquestDTO) {
         try {
             verifyIfClientExists(clientResquestDTO.getId());
@@ -85,6 +86,20 @@ public class ClientService implements IClientService {
             Client updatedClient = clientRepository.save(clientToUpdate);
 
             return new ClientResponseDTO(updatedClient);
+        }
+        catch (ClientNotFoundException e) {
+            throw e;
+        }
+        catch (Exception e) {
+            throw new InternalServerErrorException();
+        }
+    }
+
+    @Override
+    public void delete(Long id) {
+        try {
+            verifyIfClientExists(id);
+            clientRepository.deleteById(id);
         }
         catch (ClientNotFoundException e) {
             throw e;

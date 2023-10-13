@@ -10,5 +10,6 @@ public interface IClientService {
     ClientResponseDTO findById(Long id);
     ClientResponseDTO create(ClientResquestDTO clientResquestDTO);
     ClientResponseDTO updateClient(ClientResquestDTO clientResquestDTO);
+    void delete(Long id);
 
 }
