@@ -4,9 +4,11 @@ import com.github.youssfbr.patterndio.dtos.ClientResponseDTO;
 import com.github.youssfbr.patterndio.dtos.ClientResquestDTO;
 import com.github.youssfbr.patterndio.entities.Client;
 import com.github.youssfbr.patterndio.repositories.IClientRepository;
+import com.github.youssfbr.patterndio.services.exceptions.ClientIdNotNullException;
 import com.github.youssfbr.patterndio.services.exceptions.ClientNotFoundException;
 import com.github.youssfbr.patterndio.services.exceptions.InternalServerErrorException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +17,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@CacheConfig(cacheNames = "client")
 public class ClientService implements IClientService {
 
     private final IClientRepository clientRepository;
@@ -56,9 +59,21 @@ public class ClientService implements IClientService {
     @Override
     @Transactional
     public ClientResponseDTO create(ClientResquestDTO clientResquestDTO) {
-        Client client = new Client(clientResquestDTO);
-        Client clientSaved = clientRepository.save(client);
-        return new ClientResponseDTO(clientSaved);
+        try {
+
+            if (clientResquestDTO.getId() != null) throw new ClientIdNotNullException();
+
+            Client clientToSave = new Client(clientResquestDTO);
+            Client clientSaved = clientRepository.save(clientToSave);
+
+            return new ClientResponseDTO(clientSaved);
+        }
+        catch (ClientIdNotNullException e) {
+            throw e;
+        }
+        catch (Exception e) {
+            throw new InternalServerErrorException();
+        }
     }
 
     private Client verifyIfClientExists(Long id) {

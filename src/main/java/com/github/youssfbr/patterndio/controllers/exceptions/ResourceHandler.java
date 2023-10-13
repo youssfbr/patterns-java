@@ -1,6 +1,7 @@
 package com.github.youssfbr.patterndio.controllers.exceptions;
 
 import com.github.youssfbr.patterndio.dtos.Response;
+import com.github.youssfbr.patterndio.services.exceptions.ClientIdNotNullException;
 import com.github.youssfbr.patterndio.services.exceptions.ClientNotFoundException;
 import com.github.youssfbr.patterndio.services.exceptions.InternalServerErrorException;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,16 @@ public class ResourceHandler {
         response.setData(ex.getMessage());
 
         return ResponseEntity.status(STATUS_NOT_FOUND).body(response);
+    }
+
+    @ExceptionHandler(ClientIdNotNullException.class)
+    public ResponseEntity<Response<String>> clientIdNotNullExceptionException(ClientIdNotNullException ex) {
+
+        Response<String> response = new Response<>();
+        response.setStatusCode(STATUS_BAD_REQUEST.value());
+        response.setData(ex.getMessage());
+
+        return ResponseEntity.status(STATUS_BAD_REQUEST).body(response);
     }
 
     @ExceptionHandler(InternalServerErrorException.class)
